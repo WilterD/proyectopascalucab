@@ -9,101 +9,133 @@
         <Filename Value="proyecto.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="141"/>
-        <CursorPos X="50" Y="154"/>
-        <UsageCount Value="25"/>
+        <TopLine Value="30"/>
+        <CursorPos X="16" Y="38"/>
+        <UsageCount Value="38"/>
         <Loaded Value="True"/>
       </Unit0>
     </Units>
-    <JumpHistory Count="22" HistoryIndex="21">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="71" TopLine="3"/>
+        <Caret Line="4" Column="79"/>
       </Position1>
       <Position2>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="39" Column="33" TopLine="30"/>
+        <Caret Line="150" Column="45" TopLine="140"/>
       </Position2>
       <Position3>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="56" Column="35" TopLine="47"/>
+        <Caret Line="154" Column="50" TopLine="141"/>
       </Position3>
       <Position4>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="38" Column="40" TopLine="31"/>
+        <Caret Line="151" Column="40" TopLine="138"/>
       </Position4>
       <Position5>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="39" Column="48" TopLine="30"/>
+        <Caret Line="97" Column="18" TopLine="87"/>
       </Position5>
       <Position6>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="38" Column="16" TopLine="30"/>
+        <Caret Line="96" Column="8" TopLine="87"/>
       </Position6>
       <Position7>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="39" Column="48" TopLine="29"/>
+        <Caret Line="91" Column="24" TopLine="87"/>
       </Position7>
       <Position8>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="56" Column="45" TopLine="42"/>
+        <Caret Line="59" Column="36" TopLine="49"/>
       </Position8>
       <Position9>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="79" Column="11" TopLine="65"/>
+        <Caret Line="156" Column="48" TopLine="139"/>
       </Position9>
       <Position10>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="78" Column="40" TopLine="67"/>
+        <Caret Line="143" Column="23" TopLine="133"/>
       </Position10>
       <Position11>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="73" Column="13" TopLine="68"/>
+        <Caret Line="131" Column="47" TopLine="122"/>
       </Position11>
       <Position12>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="92" Column="12" TopLine="72"/>
+        <Caret Line="39" Column="15" TopLine="29"/>
       </Position12>
       <Position13>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="102" Column="3"/>
+        <Caret Line="121" Column="19" TopLine="108"/>
       </Position13>
       <Position14>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="4" Column="20"/>
+        <Caret Line="84" Column="12" TopLine="75"/>
       </Position14>
       <Position15>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="148" TopLine="136"/>
+        <Caret Line="83" Column="14" TopLine="71"/>
       </Position15>
       <Position16>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="131" Column="17" TopLine="121"/>
+        <Caret Line="29" Column="15" TopLine="19"/>
       </Position16>
       <Position17>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="148" Column="49" TopLine="128"/>
+        <Caret Line="31" Column="19" TopLine="25"/>
       </Position17>
       <Position18>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="18" Column="20" TopLine="8"/>
+        <Caret Line="29" Column="28" TopLine="19"/>
       </Position18>
       <Position19>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="5" Column="63"/>
+        <Caret Line="37" Column="9" TopLine="31"/>
       </Position19>
       <Position20>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="81" Column="68" TopLine="93"/>
+        <Caret Line="40" Column="18" TopLine="32"/>
       </Position20>
       <Position21>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="4" Column="79"/>
+        <Caret Line="28" Column="97" TopLine="22"/>
       </Position21>
       <Position22>
         <Filename Value="proyecto.lpr"/>
-        <Caret Line="150" Column="45" TopLine="140"/>
+        <Caret Line="36" Column="8" TopLine="29"/>
       </Position22>
+      <Position23>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="35" Column="9" TopLine="29"/>
+      </Position23>
+      <Position24>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="43" Column="13" TopLine="28"/>
+      </Position24>
+      <Position25>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="34" Column="11" TopLine="26"/>
+      </Position25>
+      <Position26>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="35" Column="12" TopLine="27"/>
+      </Position26>
+      <Position27>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="39" Column="38" TopLine="27"/>
+      </Position27>
+      <Position28>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="42" Column="9" TopLine="22"/>
+      </Position28>
+      <Position29>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="33" Column="21" TopLine="28"/>
+      </Position29>
+      <Position30>
+        <Filename Value="proyecto.lpr"/>
+        <Caret Line="34" Column="45" TopLine="29"/>
+      </Position30>
     </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
