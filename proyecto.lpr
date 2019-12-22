@@ -1,12 +1,26 @@
 program proyecto;
-uses crt,dos; {dos-es-to-fecha}
+{$mode objfpc}{$H+} // para factura
+
+uses crt,dos,  {dos-es-to-fecha}
+    sysutils,
+  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  cthreads,
+  {$ENDIF}{$ENDIF}
+  Classes;   // librerias
 var producto,kgcafe,kgcacao,operacion,continuar,i:Integer;
     operador,supago,Nombre_Cliente,Direccion_Cliente,Direccion_Empresa,ejemplo,clave:String;
-    rifoperador,cedula,MetodoPago,Rif_Cliente,codigo_producto1,conteo,nro_factura,cantidad_1,cantidad_2:Integer;
+    rifoperador,cedula,MetodoPago,Rif_Cliente,codigo_producto1,conteo,cantidad_1,cantidad_2,facturas_emitidas,nro_factura:Integer;
     salir,intentos:Boolean;
-
 var    a, m, d, ds : word;   {fecha}
    h, mm, s, ns : word; {hora}
+
+
+var
+  f:textfile; // var de tipo texto
+  linetxt:string;
+  var leer_factura: integer;
+  var cosa:string;
+
 const iva=0.13;
   const Rif_Empresa=289229998;
 
@@ -18,14 +32,17 @@ const iva=0.13;
   codigo_producto1:=0;
   conteo:=000126240;
   operacion:=0;
+  i:=0;
+  nro_factura:=100;
 
   ejemplo:=('Ejemplo');
-  salir:=false;  // interruptor para menu
+  salir:=false;  // interruptor para clave
   textcolor(15);
 
   intentos:=true;
   while intentos=true do
   begin
+  writeln;
   writeln('Ingresar Credenciales Para Sistema De Facturacion, (Intentos: ) ',i);
   readln(clave);
   if clave='cisco' then
@@ -36,7 +53,8 @@ const iva=0.13;
     if i=5 then
        begin
         writeln('Has intentado muchas veces, intenta mas tarde');
-        break;
+        readln();
+        Halt;
 
   end;
   end;
@@ -47,10 +65,11 @@ const iva=0.13;
    textcolor(15);
 
 
-
+  clrscr;
+  writeln;
   writeln('Bienvenido a nuestra tienda EL CAMPO C.A');
   writeln;//salto de linea
-  writeln('Ingrese sus datos como operador');
+  writeln('Ingrese sus datos como operador:');
   writeln;
   writeln;
   writeln('Nombre:');
@@ -60,9 +79,11 @@ const iva=0.13;
   readln(rifoperador);
   writeln;
   clrscr;
-  textcolor(19);
+
   while salir=false do
   begin
+  textcolor(19);
+  writeln;
   writeln;
   writeln('Seleccione Un Producto De Nuestra Tienda!');
   writeln;
@@ -77,7 +98,7 @@ const iva=0.13;
   case producto of
   
   1:begin
-  codigo_producto1:=12345;
+  codigo_producto1:=12345;   //array
   textcolor(19);
   writeln;
     write('>> Haz Seleccionado Cafe ');
@@ -88,7 +109,7 @@ const iva=0.13;
     writeln;
     read(kgcafe);
     operacion:=operacion+(kgcafe*300);
-    cantidad_1:=(cantidad_1+kgcafe);
+    cantidad_1:=(cantidad_1+kgcafe);  // array
     writeln;
     writeln;
     write('Llevas en el carrito, ',operacion,(' BS'));
@@ -98,49 +119,23 @@ const iva=0.13;
     writeln;
     textcolor(18);
     writeln('[2] pagar en caja');
-    read(continuar);
     textcolor(15);
-    if continuar=2 then
-      salir:=true
-    end; //caso 1
-
-  2:begin
-  clrscr;
-   textcolor(19);
-    write('>>Haz seleccionado Cacao ');
-    writeln; //salto de linea
-    writeln; //salto de linea
-    textcolor(15);
-    write('Cuantos kilos de cacao desea llevar?, cada kg cuesta 400 Bs');
-    writeln;
-    read(kgcacao);
-    operacion:=operacion+(kgcacao*400);
-    cantidad_2:=(cantidad_2+kgcacao);
-    writeln;
-    write('Llevas en el carrito, ',operacion,(' BS'));
-    writeln;
-    writeln;
-    writeln('[1] Ir al menu principal');
-    writeln;
-    textcolor(18);
-    writeln('[2] pagar en caja');
+    writeln();
+    write('> ');
     read(continuar);
-    
-    if continuar=2 then
-      salir:=true
-    end; //caso 2
-  
-  end; // Fin del case
-  
-  end; //while
-  nro_factura:=(conteo+1);   // sumar cantidad a factura
-  writeln('Usted ha salido');
-   clrscr;
 
 
+    if continuar=1 then
+       writeln(); // vuelve al menu por que no he salido con salir=true
 
+
+     if continuar=2 then    //paga   lo que lleva
+
+      begin
+       nro_factura:=nro_factura+1;
         writeln();
         clrscr;
+
 
     write('Como desea pagar?');
     textcolor(18);
@@ -162,14 +157,51 @@ const iva=0.13;
      3: supago:=('Dinero En Efectivo');
       end;
      writeln; //salto de linea
+     textcolor(15);
      writeln('Nombre Completo Del Cliente: ');
-     readln(Nombre_Cliente);
+     read(Nombre_Cliente);
      writeln;
      write('Rif Del Cliente: ');
-     readln(Rif_Cliente);
+     read(Rif_Cliente);
      writeln;
      writeln('Direccion Del Cliente');
-     readln(Direccion_Cliente);
+     read(Direccion_Cliente);
+
+     // Creacion de factura en bloc_archivo.txt de texto
+        assignfile(f, 'bloc_archivo.txt');
+   try
+     rewrite(f);
+ // datos de la factura
+
+    writeln(f, Direccion_Empresa);
+    writeln(f, 'Rif:',Rif_Empresa);
+    writeln(f, '----------------------------------');
+    writeln(f, 'F A C T U R A');
+    writeln(f, 'Numero: #Factura: ',nro_factura);
+    writeln(f, '------- EMISION: ');
+    writeln(f, d,'/',m,'/',a,' -------');
+    writeln(f,' HORA: ',h,':',mm,':',s,(' -------'));
+    writeln(f, 'Datos Del Cliente:');
+    writeln(f, 'Nombre: ',Nombre_Cliente);
+
+    writeln(f, 'Direccion: ',Direccion_Cliente);
+    writeln(f, 'Rif: ',Rif_Cliente);
+    writeln(f, 'Nombre Del Cajero: ',operador);
+    writeln(f, 'Codigo del producto: ',codigo_producto1);
+    writeln(f, 'Cantidad De Productos: -----',cantidad_1,cantidad_2);
+    writeln(f, 'Precio De Los Productos De La Tienda: ',operacion);
+    writeln(f, 'COSTO TOTAL A PAGAR---- ',operacion*iva+operacion:0:2);
+    writeln(f, 'su metodo de pago es: ',supago);
+    writeln(f, 'GRACIAS POR SU COMPRA, VUELVA PRONTO!!');
+    writeln(f, '------------------FIN------------------');
+ close(f);
+   except
+     writeln('Error En El Sistema');
+   end;
+     // fin de creacion de bloc_archivo.txt
+
+
+
  clrscr;
 
   {FACTURA} {Datos Empresa}
@@ -204,42 +236,98 @@ writeln('COSTO TOTAL A PAGAR---- ',operacion*iva+operacion:0:2);
 
 writeln('su metodo de pago es: ',supago); //obteniendo metodo pago
 writeln;
-writeln;
-writeln('codigo de barras (HACER)');
 writeln('GRACIAS POR SU COMPRA, VUELVA PRONTO!!');
 writeln;
 writeln('------------------FIN------------------');
 writeln;
-Writeln('SELLO EMPRESA');
+
+writeln('para volver a emitir otra factura [1]');
+writeln('para leer las facturas emitidas haga clic en [2]');
+
+
+readln(leer_factura);
+
+  if leer_factura=1 then
+   facturas_emitidas:=(facturas_emitidas+1);
+   operacion:=0;
+  supago:='';
+  Rif_Cliente:=0;
+  Nombre_Cliente:='';
+  Direccion_Cliente:='';
+
+  writeln();    // vuelvo al ciclo while y reseteo los valores de factura
+
+  if leer_factura=2 then
+  begin
+   //leer factura
+  assignfile(f, 'bloc_archivo.txt');
+  try
+    reset(f);
+    while not eof(f) do
+    begin
+      readln(f, linetxt);
+      writeln(linetxt);
+    end;
+   close(f);
+  except
+    writeln('Error de archivo');
+  end;
+
+   end;
+
+  end;  // fin sistema de pago
+
+  end; //fin caso 1
+
+
+  //producto 2  y su comercializacion (opciones) antes de > pagar
+
+
+
+  2:begin
+  clrscr;
+   textcolor(19);
+    write('>>Haz seleccionado Cacao ');
+    writeln; //salto de linea
+    writeln; //salto de linea
+    textcolor(15);
+    write('Cuantos kilos de cacao desea llevar?, cada kg cuesta 400 Bs');
+    writeln;
+    read(kgcacao);
+    operacion:=operacion+(kgcacao*400);
+    cantidad_2:=(cantidad_2+kgcacao);  //array
+    writeln;
+    write('Llevas en el carrito, ',operacion,(' BS'));
+    writeln;
+    writeln;
+    writeln('[1] Ir al menu principal');
+    writeln;
+    textcolor(18);
+    writeln('[2] pagar en caja');
+    textcolor(15);
+    writeln();
+    write('> ');
+    read(continuar);
+
+
+    if continuar=1 then
+       writeln(); // vuelve al menu por que no he salido con salir=true
+
+
+     if continuar=2 then    //paga   lo que lleva
+
+      begin
+        writeln();
+        clrscr;
+
+
+
+
+    end; //caso 2
+  end;end;end;
+
 
   readkey;
 
-  
 
-(*
- Cosas basicas para el project
-bienvenido a la tienda nombre()   // YA
-escoge un producto //YA
-has seleccionado cafe //YA
-cuanto desea llevar c/u cuesta 300  //YA
-llevas 300 en el carrito, desea seguir escogiendo productos y/n?
-Y
-Volver al menu principal de menu
-N
-Digame nombre del cliente   // YA
-rif del cliente        //ya
-direccion           //ya
-fecha de la compra   //ya
-hora de la compra    //ya
-nombre del cajero constante //ya
-numero de factura   acumulador
---Detalle de la compra--
-codigo del producto   acumulador
-Descripción del producto.   contante
-Cantidad.     variable que escogio
-Costo del producto.   acumulador
-Total de la compra.   variable sumatoria sin iva
-IVA de la compra.    constante multiplicar
-Total a pagar.   pagar con iva
-Descripción del pago(Efectivo o con tarjeta de débito o con tarjeta de crédito)*)
 end.

@@ -1,2 +1,20 @@
-vanmos a verasa 
---------------
+
+Rif:289229998
+----------------------------------
+F A C T U R A
+Numero: #Factura: 101
+------- EMISION: 
+0/0/0 -------
+ HORA: 0:0:0 -------
+Datos Del Cliente:
+Nombre: 
+Direccion: 
+Rif: 222
+Nombre Del Cajero: WILEER
+Codigo del producto: 12345
+Cantidad De Productos: -----20
+Precio De Los Productos De La Tienda: 600
+COSTO TOTAL A PAGAR---- 678.00
+su metodo de pago es: Tarjeta De Debito
+GRACIAS POR SU COMPRA, VUELVA PRONTO!!
+------------------FIN------------------
