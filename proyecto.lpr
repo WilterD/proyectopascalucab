@@ -8,7 +8,7 @@ uses crt,dos,  {dos-es-to-fecha}
   {$ENDIF}{$ENDIF}
   Classes;   // librerias
 var producto,kgcafe,kgcacao,operacion,continuar,i:Integer;
-    operador,supago,Nombre_Cliente,Direccion_Cliente,Direccion_Empresa,ejemplo,clave:String;
+    operador,supago,Direccion_Empresa,ejemplo,clave,Nombre_Cliente,Direccion_Cliente:String;
     rifoperador,cedula,MetodoPago,Rif_Cliente,codigo_producto1,conteo,cantidad_1,cantidad_2,facturas_emitidas,nro_factura:Integer;
     salir,intentos:Boolean;
 var    a, m, d, ds : word;   {fecha}
@@ -136,6 +136,17 @@ const iva=0.13;
         writeln();
         clrscr;
 
+     writeln('Nombre Completo Del Cliente: ');
+     read(Nombre_Cliente);
+     writeln;
+
+
+     writeln('Rif Del Cliente: ');
+     read(Rif_Cliente);
+
+     writeln;
+     writeln('Direccion Del Cliente');
+     read(Direccion_Cliente);
 
     write('Como desea pagar?');
     textcolor(18);
@@ -158,14 +169,8 @@ const iva=0.13;
       end;
      writeln; //salto de linea
      textcolor(15);
-     writeln('Nombre Completo Del Cliente: ');
-     read(Nombre_Cliente);
-     writeln;
-     write('Rif Del Cliente: ');
-     read(Rif_Cliente);
-     writeln;
-     writeln('Direccion Del Cliente');
-     read(Direccion_Cliente);
+
+
 
      // Creacion de factura en bloc_archivo.txt de texto
         assignfile(f, 'bloc_archivo.txt');
@@ -252,8 +257,6 @@ readln(leer_factura);
    operacion:=0;
   supago:='';
   Rif_Cliente:=0;
-  Nombre_Cliente:='';
-  Direccion_Cliente:='';
 
   writeln();    // vuelvo al ciclo while y reseteo los valores de factura
 
