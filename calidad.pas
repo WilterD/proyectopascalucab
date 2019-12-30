@@ -1,11 +1,98 @@
 program calidad;
  uses crt,dos;
+
+type
+boletos = RECORD
+
+
+ nombrecomprador:string[30];
+ numboleto:integer;
+
+ nombrevendedor:string[30];
+
+ end;
+
+
+procedure buscar;
+var
+
+  boleto:boletos;
+  archivo: file of boletos;
+  numero,i:integer;
+  begin
+    clrscr;
+    i:=0;
+    assign(archivo,'C:\Users\WilterD\Desktop\proyecto-pascal\proyectopascalucab-master\proyectopascalucab-master\pruebas\boletos.dat');
+    reset(archivo);
+    write('Numero de boleto a buscar?');
+    readln(numero);
+    while not eof(archivo) do
+begin
+  read(archivo,boleto);
+  if boleto.numboleto = numero then
+  begin
+    i:=1;
+
+    writeln('nombre del comprador');
+    writeln(boleto.nombrecomprador);
+    writeln('numero del boleto: ');
+    writeln(boleto.numboleto);
+    writeln('nombre del vendedor');
+    writeln(boleto.nombrevendedor);
+
+  end;
+  end;
+    if i=0 then
+    begin
+      writeln('ERROR. BOLETO NO ASIGNADO');
+      end;
+    close(archivo);
+    end;
+
+
+
+procedure alta;
+var
+boleto:boletos;
+archivo: file of boletos;
+begin
+  assign(archivo,'C:\Users\WilterD\Desktop\proyecto-pascal\proyectopascalucab-master\proyectopascalucab-master\pruebas\boletos.dat');
+  reset(archivo);
+  seek(archivo,filesize(archivo));
+
+
+  writeln('> Cedula De Cliente: ');
+  readln(boleto.numboleto);
+         writeln('ingresa el nombre del comprador');
+  readln(boleto.nombrecomprador);
+  writeln('ingresar Direccion De Cliente: ');
+  readln(boleto.nombrevendedor);
+  write(archivo, boleto);
+  close(archivo);
+  writeln('NUEVO REGISTRO INSERTADO');
+  readkey;
+end;
+
+
+
+
 type
      TRProductos = RECORD
      nombre_p:string;
      cantidad_p,codigo_p:integer;
      total_p,precio:real;
   end;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -100,7 +187,7 @@ halt;  // salir
 
  seguir:=true;
  nro_factura:=1;
-
+  i:=i+1;
  // M E N U
  while seguir=true do
  begin
@@ -195,11 +282,12 @@ halt;  // salir
 
   if seleccion=1 then
 begin
-  with productos[1] do
+  with productos[i] do
   begin
   if nombre_p='Cafe' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -227,7 +315,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+  i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Cafe'));
   writeln();
 end;
@@ -238,11 +326,12 @@ end;
 
    if seleccion=2 then
   begin
-  with productos[2] do
+  with productos[i] do
   begin
   if nombre_p='Cacao' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -270,7 +359,7 @@ end;
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+   i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Cacao'));
   writeln();
 end;
@@ -281,11 +370,12 @@ end;
 
     if seleccion=3 then
 begin
-  with productos[3] do
+  with productos[i] do
   begin
   if nombre_p='Azucar' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -313,7 +403,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+   i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Azucar'));
   writeln();
 end;
@@ -323,11 +413,12 @@ end;
 
      if seleccion=4 then
 begin
-  with productos[4] do
+  with productos[i] do
   begin
   if nombre_p='Arroz' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -355,7 +446,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+   i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Arroz'));
   writeln();
 end;
@@ -365,11 +456,12 @@ end;
 
      if seleccion=5 then
 begin
-  with productos[5] do
+  with productos[i] do
   begin
   if nombre_p='Lentejas' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -397,7 +489,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+    i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Lentejas'));
   writeln();
 end;
@@ -407,11 +499,12 @@ end;
 
      if seleccion=6 then
 begin
-  with productos[6] do
+  with productos[i] do
   begin
   if nombre_p='Espaguetti' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -439,7 +532,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+  i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Espaguetti'));
   writeln();
 end;
@@ -449,11 +542,12 @@ end;
 
      if seleccion=7 then
 begin
-  with productos[7] do
+  with productos[i] do
   begin
   if nombre_p='Leche' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -481,7 +575,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+   i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Leche'));
   writeln();
 end;
@@ -491,11 +585,12 @@ end;
 
      if seleccion=8 then
 begin
-  with productos[8] do
+  with productos[i] do
   begin
   if nombre_p='Harina Pan' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -523,7 +618,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+   i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Harina Pan'));
   writeln();
 end;
@@ -534,11 +629,12 @@ end;
 
      if seleccion=9 then
 begin
-  with productos[9] do
+  with productos[i] do
   begin
   if nombre_p='Avena' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -566,7 +662,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+    i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Avena'));
   writeln();
 end;
@@ -578,11 +674,12 @@ end;
 
      if seleccion=10 then
 begin
-  with productos[10] do
+  with productos[i] do
   begin
   if nombre_p='Fororo' then   // si ya habia seleccionado cafe no suma el contador
     begin
     contador:=contador-1;
+    i:=i-1;
     writeln;
     end;
   clrscr;
@@ -610,7 +707,7 @@ begin
   gotoxy(14,25);
   write('>');
   textcolor(15);
-
+   i:=i+1; // mover posicion al array productos
   writeln('   Llevas en el carrito: ',total_p:0:2,(' BS Con Fororo'));
   writeln();
 end;
@@ -853,7 +950,7 @@ halt;  // salir
     writeln('Pago Por: ',supago);
     gotoxy(4,19);
     writeln('Cajero:',nombre_operador);
-    gotoxy(4,20);
+    gotoxy(34,20);
     writeln('T O T A L');
     writeln('---------------------------------------------------------------------');
     gotoxy(50,20);
@@ -890,13 +987,14 @@ halt;  // salir
     total_p:=0;
     precio:=0;
     codigo_p:=0;
+    subtotal:=0;
     clrscr;
 
       end;
     end;
 
     // cantidad_p:=[0]; // inicializar arrays
-
+    i:=1;
   writeln; // continuar en el ciclo menu
   end;
   if seleccion=2 then
@@ -904,7 +1002,17 @@ halt;  // salir
   seguir:=false;
   end;  // salir del ciclo
 
+  if seleccion=3 then
+  begin
 
+alta;
+readkey;
+
+    end;
+  if seleccion=4 then
+  begin
+  buscar;
+  end;
        end;
     end;
  end.
