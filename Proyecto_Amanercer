@@ -1,0 +1,397 @@
+program Akatsuki;
+uses crt,Dos;
+const
+			iva=0.13;
+      azucar=2;
+      helado=3;
+      toddy=3;
+			mortadela=4;
+			salchichon=4;
+			queso=3;
+			jamon=3;
+var
+		nombre: string;
+		nuevo: String; // datos
+    cedula: integer;
+    decision,comprar,continuar,tecla: char; //borrar tecla
+    art, cant, precio,total: Integer;
+    anio, mes, dia, dia_s, hora,min,segu,ms: word;
+    menu: Integer;
+    salir,protocolo,imprimir,cliente: Boolean;
+    product: array [1..10] of string;
+    cantidad: array [1..10] of integer;
+    precio_product: array[1..10] of integer;
+    i,j,k: integer;
+
+		{booleanos de productos}
+
+		boolean_azucar,boolean_helado,boolean_toddy,boolean_queso,boolean_mortadela,boolean_salchichon,boolean_jamon: boolean;
+
+begin
+  clrscr;
+  i:=1;
+  total:=0;
+  GetDate(anio,mes,dia,dia_s);
+	salir:=false;
+	protocolo:=false;
+	cliente:=False;
+  nuevo:='> Nuevo Cliente [0]';
+	cedula:=0;
+	boolean_azucar:=false;
+	boolean_helado:=false;
+	boolean_toddy:=false;
+
+  while (salir=false) do
+  begin
+
+    if (cliente=true) Then
+		Begin
+			textcolor(lightgreen);
+			write('> Nombre del Cliente: ');
+			textcolor(15);
+			write(nombre);
+			textcolor(lightgreen);
+			write('  CI: ');
+			textcolor(15);
+			write(cedula);
+			writeln;
+		end;
+
+  	textColor(lightgreen);
+  	Writeln(nuevo);
+		WriteLn;
+  	textColor(15);
+  	writeln('> Carnes [1]');
+ 	 	writeln('> Azucares [2]');
+ 	 	writeln('> Frutas y vegetales [3]');
+		writeln('> Embutidos [4]');
+  	writeln('> Carrito [5]');
+		Writeln('> Salir [6]');
+  	WriteLn;
+		write('> ');
+		readln(menu);
+
+		if (menu>7) then
+  	begin
+   		writeln('> Ingrese un número válido');
+   		readkey;
+  	end;
+
+  	case menu of
+
+  		0: begin
+						writeln;
+						write('Nombre del Cliente: ');
+						readln(nombre);
+						write('CI: ');
+						readln(cedula);
+						i:=1;
+						ClrScr;
+						cliente:=true;
+					end;
+
+  		1: begin
+      			Write('En construccion');
+    		 end; //Fin carnes
+
+  		2: begin
+    				clrscr;
+ 		   			textColor(5); WriteLn('-----------------------------------------');
+						writeln;
+   		 			textcolor(15);
+    				writeln('> Azucar (1kg) [1]');
+    				writeln('> Helado [2]');
+    				writeln('> Toddy [3]');
+    				writeln;
+    				write('> ');
+						read(art);
+
+  					case art of
+
+								1: begin
+       								textColor(5); WriteLn('-----------------------------------------');
+											writeln;
+  	     							textcolor(15);
+    	   							writeln('> Azucar (1kg) = ',azucar,' UC');
+      	 							write('> Cuantas quiere? ');
+       								readln(cant);
+       								precio:=azucar*cant;
+       								writeln;
+       								textcolor(yellow);
+       								writeln('> Total a pagar ',precio,' UC');
+	       							write('> Desea cargarlo al carrito? s/n: ');
+ 	      							readln(decision);
+
+	     								if cliente=false then
+												begin
+    	   									writeln;
+      	 									textcolor(4);
+       										write('> Regrese al menu e ingrece datos del cliente primero');
+       										writeln;
+     										end
+
+  	   								else if decision='s' then
+    	 									begin
+
+													if boolean_azucar=true Then
+													begin
+														for k:=1 to 10 Do
+														Begin
+															if product[k]='> Azucar (1kg)' Then
+															Begin
+																writeln;
+																textcolor(15);
+																writeln('Usted ya posee este articulo en su carrito');
+																write('Desea sumar la cantidad que desea llevarse con la que ya tenga en el carrito? s/n');
+																readln(decision);
+
+																case decision Of
+
+																	's':
+																	Begin
+																		cantidad[k]:=(cantidad[k]+cant);
+																		precio_product[k]:=(cantidad[k]*azucar);
+																		clrscr;
+																	end;
+
+																	'n':
+																	begin
+																		Writeln('No se le agregaron productos al carrito. Regresando');
+																		delay(5000);
+																		clrscr;
+																	End;
+																end;
+
+																if decision<>'' Then
+																Begin
+																	writeln('Ingreso uno o mas caracteres invalidos');
+																	delay(3000);
+																	clrscr;
+																end;
+
+															end
+														end
+													end
+
+													else
+													begin
+														product[i]:='> Azucar (1kg)';
+       											cantidad[i]:=cant;
+       											precio_product[i]:=precio;
+ 		      									i:=i+1;
+														boolean_azucar:=true;
+														protocolo:=true;
+  		     									clrscr;
+   		    									writeln('> Muy bien');
+													end
+   		  								end
+
+	  		   						else if decision='n' then
+  	   									begin
+		    	   							clrscr;
+		      	 							writeln('> Ha ingresado un caracter invalido');
+		     								end
+
+   		  							else if (decision<>'') then
+     										begin
+								    	   clrscr;
+		       							 writeln('> Ingresa una opcion valida');
+		     							 	end;
+
+	  								end; {case 1}
+
+								2: begin
+		  	     					writeln('> Helado = ',helado,' UC');
+  		  	   					write('> Cuantos quiere? ');
+    		  	 					readln(cant);
+       								precio:=helado*cant;
+       								writeln;
+       								textcolor(yellow);
+       								writeln('> Total a pagar ',precio,' UC');
+       								write('> Desea cargarlo al carrito? s/n: ');
+	       							read(decision);
+
+											if cliente=false then
+  	   									begin
+    	   								  writeln;
+      	 								  textcolor(4);
+       									  write('> Regrese al menu e ingrece datos del cliente primero');
+       									  writeln;
+     										end
+
+		     							else if decision='s' then
+   		  								begin
+     		  							  product[i]:='> Helado';
+       								  	cantidad[i]:=cant;
+	       									precio_product[i]:=precio;
+  	     									i:=i+1;
+													protocolo:=true;
+    	   									clrscr;
+      	 									writeln('> Muy bien');
+     										end
+
+     									else if decision='n' then
+     										begin
+       										clrscr;
+       										writeln('> Te lo pierdes');
+     										end
+
+	     								else if (decision<>'') then
+		  	   							begin
+   		 	 	  							clrscr;
+     			 	 							writeln('> Ingresa una opcion valida');
+     										end;
+
+  									end;
+
+  							3: begin
+	       							writeln('> Toddy = ',toddy,' UC');
+ 	 			   		  			write('> Cuantos quiere? ');
+ 	   			   					readln(cant);
+ 	   	  		 					precio:=toddy*cant;
+ 	   	  	 						writeln;
+ 	    	  						textcolor(yellow);
+		 	      					writeln('> Total a pagar ',precio,' UC');
+											write('> Desea cargarlo al carrito? s/n: ');
+ 	 			     					read(decision);
+
+					 						if cliente=false then
+   	  									begin
+   	    									writeln;
+   	    									textcolor(4);
+   	    									write('> Regrese al menu e ingrece datos del cliente primero');
+    	   									writeln;
+     										end
+
+				     					else if decision='s' then
+ 				    						begin
+ 		   			   						product[i]:='> Toddy';
+ 		      								cantidad[i]:=cant;
+  		     								precio_product[i]:=precio;
+  	  	   								i:=i+1;
+													protocolo:=true;
+   	    									clrscr;
+   	    									writeln('> Muy bien');
+   	  									end
+
+	 	    							else if decision='n' then
+ 	 		   								begin
+ 	   		  	 							clrscr;
+ 	     		 								writeln('> Tu te lo pierdes');
+ 	    									end
+
+ 	    								else if (decision<>'') then
+ 	    									begin
+ 	      									clrscr;
+	 	      								writeln('> Ingrese una opcion valida');
+ 		    								end;
+
+  									end; {case art 3}
+  						end; {Fin case art}
+  				end; {case menu 2}
+			4: Begin
+
+		     End; {case menu 4}
+		  5: begin
+           if (cliente=true) and (protocolo=true) then
+           begin
+              clrscr;
+              textColor(5);
+              WriteLn('-----------------------------------------');
+              textcolor(15);
+
+    					for j:=1 to (i-1) do
+      				begin
+      					writeln(product[j],'x', cantidad[j],'--->',precio_product[j],'UC');
+      					total:=total+precio_product[j];
+      					writeln;
+      				end;
+
+    					writeln(total,'UC');
+
+    					write('Proceder a comprar? s/n: ');
+    					readln(comprar);
+
+    					if comprar='s' then
+      					begin
+      			  			writeln;
+      							write('Desea continuar y proceder con la factura? s/n: ');
+      							readln(continuar);
+
+      							if continuar='s' then
+        							imprimir:=true
+      					end;
+
+    					if imprimir=true then
+      					begin
+      							clrscr;
+      							Gotoxy(30,2);
+										Writeln('SENIAT');
+      							Gotoxy(25,3);
+										Writeln('RIF  J-001002003');
+      							Gotoxy(22,4);
+										Writeln('SUPERMERCADO EL CAMPO');
+      							Gotoxy(29,5);
+										Writeln('MODULO 7');
+      							Gotoxy(17,6);
+										Writeln('UNIVERSIDAD CATOLICA ANDRES BELLO');
+      							Gotoxy(21,7);
+										Writeln('EXTENCION VIA ATLANTICO');
+      							Gotoxy(19,8);
+										Writeln('PUERTO ORDAZ, ESTADO BOLIVAR');
+      							Writeln;
+      							Writeln('  Cliente: ',nombre);
+      							Writeln('  Rif: V-',cedula);
+      							Writeln('  Direccion: ');
+      							Writeln('  Cajero: ');
+      							Writeln;
+      							Gotoxy(30,15);
+										Writeln('FACTURA');
+      							Writeln;
+      							Write('  FACTURA: ');
+										Gotoxy(50,17);
+      							Write('FECHA: ',dia,'/',mes,'/',anio);
+										GetTime(hora,min,segu,ms);
+										Gotoxy(50,18);
+										WriteLn('HORA: ',hora,':',min);
+      							WriteLn('---------------------------------------------------------------');
+      							for j:=1 to (i-1) do
+      							begin
+      								writeln(product[j],'x', cantidad[j],'--->',precio_product[j],'UC');
+      								writeln;
+      							end;
+      							writeln;
+      							WriteLn('---------------------------------------------------------------');
+      							writeln('  BI G (16,00%)');
+      							writeln('  IVA G (16,00%)');
+      							WriteLn('---------------------------------------------------------------');
+      							writeLn('  TOTAL');
+      							write('  DEBITO/EFECTIVO/CREDITO');
+      							writeln;
+      							ReadKey;
+
+      					end
+
+    				end {if 5}
+
+   			else
+     	  begin
+     		 		clrscr;
+      			textcolor(5);
+      			writeln('Ingrese datos del cliente y productos primero')
+      	 end;
+    end; {Caso 5}
+
+  	6: salir:=true;
+
+  	7: begin
+  				clrscr;
+  				write(i)
+				end
+	end; {while}
+  textColor(5);
+	WriteLn('-----------------------------------------');
+	writeln;
+  textcolor(15);
+end;
+end.
