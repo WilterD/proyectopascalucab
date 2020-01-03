@@ -1,5 +1,20 @@
 program elcampo;
- uses crt,dos;
+ uses crt,dos,sysutils,
+  {$IFDEF UNIX}{$IFDEF UseCThreads}
+  cthreads,
+  {$ENDIF}{$ENDIF}
+  Classes;   // librerias;
+
+  var
+  f:textfile; // var de tipo texto
+  linetxt:string;
+
+
+  var salir:boolean;
+    // EJEMPLO PARA APLICAR A PROYECTO FACTURA
+
+  //cosas de guardar
+
 
 // PRECIOS PRODUCTOS
 
@@ -15,82 +30,14 @@ program elcampo;
    const precio_fororo=1000;
 
 
-     {*
-type
-boletos = RECORD
+
+     // GUARDAR DATOS INICIO
+     var conteo_facturas,conteo_ventas:integer;
 
 
- nombrecomprador:string[30];
- numboleto:integer;
-
- nombrevendedor:string[30];
-
- end;
 
 
-procedure buscar;
-var
-
-  boleto:boletos;
-  archivo: file of boletos;
-  numero,i:integer;
-  begin
-    clrscr;
-    i:=0;
-    assign(archivo,'C:\Users\WilterD\Desktop\proyecto-pascal\proyectopascalucab-master\proyectopascalucab-master\pruebas\boletos.dat');
-    reset(archivo);
-    write('Numero de boleto a buscar?');
-    readln(numero);
-    while not eof(archivo) do
-begin
-  read(archivo,boleto);
-  if boleto.numboleto = numero then
-  begin
-    i:=1;
-
-    writeln('nombre del comprador');
-    writeln(boleto.nombrecomprador);
-    writeln('numero del boleto: ');
-    writeln(boleto.numboleto);
-    writeln('nombre del vendedor');
-    writeln(boleto.nombrevendedor);
-
-  end;
-  end;
-    if i=0 then
-    begin
-      writeln('ERROR. BOLETO NO ASIGNADO');
-      end;
-    close(archivo);
-    end;
-
-
-procedure alta;
-var
-boleto:boletos;
-archivo: file of boletos;
-begin
-  assign(archivo,'C:\Users\WilterD\Desktop\proyecto-pascal\proyectopascalucab-master\proyectopascalucab-master\pruebas\boletos.dat');
-  reset(archivo);
-  seek(archivo,filesize(archivo));
-
-  writeln('> Cedula De Cliente: ');
-  readln(boleto.numboleto);
-         writeln('ingresa el nombre del comprador');
-  readln(boleto.nombrecomprador);
-  writeln('ingresar Direccion De Cliente: ');
-  readln(boleto.nombrevendedor);
-  write(archivo, boleto);
-  close(archivo);
-  writeln('NUEVO REGISTRO INSERTADO');
-  readkey;
-end;
-
-*}   // E N - - - - - - C O N S T R U C C I O N
-
-// ver proceso
-
-type
+     type
      TRProductos = RECORD
      nombre_p:string;
      cantidad_p,codigo_p:integer;
@@ -101,13 +48,38 @@ type
   var productos:TProductos;
  //iniciar Sesion
 
+
+  var
+    opc:integer; {variable global }
+    var datos,operacion:integer;
+      var fila: integer;  // posicion de arrays para gotoxy
+
+
+        // C O M P R A
+               var contador:integer; // hasta para el ciclo for del array
+                var iva_operacion:real;
+
+
+        // M E N U
+           var seguir: boolean; // ciclo while menu
+           var seleccion:integer; //seleccion
+           var i,k:integer; // GLOBAL
+
+
+        // ver proceso
+
+             // ADMIN
+         var admin_entrada:boolean;
+           var opciones_admin:string;
+
+
  var clave:string;
   var intentos:boolean;
 
  // contador global
 
    const iva=0.13;
-   var fila: integer;  // posicion de arrays para gotoxy
+     // posicion de arrays para gotoxy
 
 
  // datos de clientes
@@ -118,10 +90,7 @@ type
           // operador
            var nombre_operador,direccion_c,nombre_c:string;
 
-     // M E N U
-           var seguir: boolean; // ciclo while menu
-           var seleccion:integer; //seleccion
-           var i,k:integer; // GLOBAL
+
 
      // F A C T U R A C I O N
             var nro_factura:integer;
@@ -129,14 +98,14 @@ type
             var    a, m, d, ds : word;   {fecha}
                     h, mm, s, ns : word; {hora}
 
-           // C O M P R A
-               var contador:integer; // hasta para el ciclo for del array
-                var iva_operacion:real;
+
 
                  var cant_p,carrito:integer;  // carrito
 
                   var  existe_cafe,existe_cacao,existe_azucar,existe_arroz,existe_lentejas,existe_espaguetti,existe_leche,existe_harina,existe_avena,existe_fororo:boolean;
 
+                  // animacion preloader
+                          var p,n,columnas:integer;
 
  begin
  clrscr;
@@ -145,8 +114,13 @@ type
 
  intentos:=true;
  i:=0;
- existe_cafe:=false;
- existe_cacao:=false;
+
+
+
+
+
+
+
  while intentos=true do
  begin
  writeln('--- Ingresa Los Credenciales Para Ingresar Al Sistema ---');
@@ -175,10 +149,26 @@ halt;  // salir
    end;
     end;
    clrscr;
-  gotoxy(25,12);
-  textcolor(11);
-writeln('>> Cargando por favor espere..');  // Loading
-delay(3000);
+
+
+textcolor(11);
+columnas:=4;
+for p:=1 to 70 do
+begin
+gotoxy(columnas,8);
+writeln('-_-_-_-_-_');
+delay(3);
+columnas:=columnas+1;
+clrscr;
+end;
+for n:=70 downto 1 do
+begin
+gotoxy(columnas,8);
+writeln('-_-_-_-_-_');
+delay(3);
+columnas:=columnas-1;
+clrscr;
+end;
  clrscr;
 
 
@@ -192,6 +182,7 @@ delay(3000);
        clrscr;
        gotoxy(13,1);
  writeln('--- Bienvenido al Sistema EL CAMPO C.A ---');
+
 
  seguir:=true;
  nro_factura:=1;
@@ -290,7 +281,99 @@ delay(3000);
  gotoxy(4,16);
  read(seleccion);
 
-  // C A F E
+
+
+ // MODO ADMIN
+
+ if seleccion=99 then
+ begin
+
+  clrscr;
+ textcolor(15);
+ gotoxy(13,10);
+
+ intentos:=true;
+ i:=0;
+ while intentos=true do
+ begin
+ writeln('--- Ingresar Al Modo Admin ---');
+ writeln;
+ textcolor(11);
+ write('> ');
+ textcolor(15);
+ readln(clave);
+ if clave=('cisco') then
+ intentos:=false
+ else
+ begin
+  i:=i+1;
+
+ if i=3 then
+ begin
+ textcolor(12);
+ writeln('Lo siento, intenta denuevo mas tarde..');
+ readkey;
+ textcolor(15);
+halt;  // salir
+ end;
+   end;
+    end;
+  clrscr;
+  textcolor(18);
+
+  begin
+  writeln;
+  writeln('>> Has Ingresado Sastifactoriamente');
+ textcolor(15);
+       writeln;
+       writeln('MENU DE OPCIONES ');
+       writeln;
+       writeln('Ver Dashboard  [ver]');
+       writeln;
+
+       read(opciones_admin);
+
+
+
+  if opciones_admin=('ver') then
+  begin
+    clrscr;
+   //leer factura
+  assignfile(f, 'bloc_archivo.txt');
+  try
+    reset(f);
+    while not eof(f) do
+    begin
+
+      readln(f, linetxt);
+
+      writeln(linetxt);
+
+    end;
+
+    close(f);
+    readkey;
+    writeln;
+    writeln('Presiona Una Tecla Para Continuar..');
+    clrscr;
+  except
+    writeln('Error de archivo');
+  end;
+   end;
+
+  end;
+  end;
+
+ // FIN MODO ADMIN
+
+
+
+
+
+
+
+
+ // C A F E
 
  if seleccion=1 then
 
@@ -1004,73 +1087,7 @@ end;
 end;
   end;
 
- // MODO ADMIN
-
- if seleccion=99 then
- begin
-
-  clrscr;
- textcolor(15);
- gotoxy(13,10);
-
- intentos:=true;
- i:=0;
- while intentos=true do
- begin
- writeln('--- Ingresar Al Modo Admin ---');
- writeln;
- textcolor(11);
- write('> ');
- textcolor(15);
- readln(clave);
- if clave=('cisco') then
- intentos:=false
- else
- begin
-  i:=i+1;
-
- if i=3 then
- begin
- textcolor(12);
- writeln('Lo siento, intenta denuevo mas tarde..');
- readkey;
- textcolor(15);
-halt;  // salir
- end;
-   end;
-    end;
-  clrscr;
-  textcolor(18);
-
-  writeln;
-  writeln('>> Has Ingresado Sastifactoriamente');
- textcolor(15);
-       writeln;
-       writeln('MENU DE OPCIONES ');
-       writeln;
-       writeln('Ver Cantidad De Facturas Realizadas En El Dia  [1]');
-       writeln;
-       writeln('Ver Productos Vendidos [2]');
-       writeln;
-       writeln('Salir [3]');
-       read(seleccion);
-       if seleccion=1 then
-       begin
-       end;
-
-       if seleccion=2 then
-       begin
-       end;
-
-       if seleccion=3 then
-       begin
-       intentos:=false;
-       end;
-
-
- end;
-
- // FIN MODO ADMIN
+ // PAGAR
 
   if seleccion=11 then   // PAGAR EN CAJA
  begin
@@ -1261,10 +1278,51 @@ textcolor(15);
   gotoxy(40,24);
   write('> ');
   gotoxy(40,24);
+
   read(seleccion);
+
+
+
   if seleccion=1 then
   begin
-    nro_factura:=nro_factura+1; // emitir ora factura
+  conteo_facturas:=nro_factura;
+  nro_factura:=nro_factura+1; // E M I T I R --- O T R A --- F A C T U R A
+
+
+  with productos[i] do
+  begin
+
+    for i:=1 to contador do
+       begin
+
+       with productos[i] do
+       begin
+    gotoxy(4,fila);
+    fila:=fila+1;
+    // Ingresar datos en bloc de notas
+      assignfile(f, 'bloc_archivo.txt');
+  try
+    rewrite(f);
+    writeln(f, '--------------');
+    writeln(f, 'Se han emitido: ',conteo_facturas,'  Facturas En Total');
+    writeln(f, '--------------');
+    writeln(f, 'Se han Vendido: ',subtotal+iva_operacion:0:2,' BS En Total');
+    clrscr;
+    close(f);
+
+  except
+    writeln('Error En El Sistema');
+  end;
+
+         end;
+       end;
+    end;
+  end;
+
+
+  begin
+
+
     contador:=0;
     for i:=1 to 10 do
     begin
@@ -1276,35 +1334,39 @@ textcolor(15);
     precio:=0;
     codigo_p:=0;
     subtotal:=0;
+    iva_operacion:=0;
+
+
 
     // reiniciar productos que existen
     existe_cafe:=false;
     existe_cacao:=false;
+    existe_azucar:=false;
+    existe_arroz:=false;
+    existe_lentejas:=false;
+    existe_espaguetti:=false;
+    existe_leche:=false;
+    existe_harina:=false;
+    existe_avena:=false;
+    existe_fororo:=false;
+
     clrscr;
 
       end;
     end;
 
-    // cantidad_p:=[0]; // inicializar arrays
+    // inicializar arrays
     i:=1;
   writeln; // continuar en el ciclo menu
+
   end;
+
+
   if seleccion=2 then
   begin
   seguir:=false;
   end;  // salir del ciclo
 
-  if seleccion=3 then
-  begin
-
-alta;
-readkey;
-
-    end;
-  if seleccion=4 then
-  begin
-  buscar;
-  end;
        end;
     end;
  end.
