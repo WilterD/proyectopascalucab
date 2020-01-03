@@ -172,12 +172,19 @@ end;
  clrscr;
 
 
-  textcolor(18);
+  textcolor(11);
   writeln;
+  gotoxy(4,7);
   writeln('>> Has Ingresado Sastifactoriamente');
  textcolor(15);
        writeln;
+       gotoxy(28,13);
        writeln('Nombre De Operador: ');
+       gotoxy(28,14);
+       textcolor(11);
+       write('>');
+       gotoxy(30,14);
+       textcolor(15);
        read(nombre_operador);
        clrscr;
        gotoxy(13,1);
@@ -1092,19 +1099,33 @@ end;
   if seleccion=11 then   // PAGAR EN CAJA
  begin
    clrscr;
+   gotoxy(28,7);
    writeln('Cedula Del Cliente: ');
+   gotoxy(28,9);
+   write('> ');
    readln(cedula_c);
-
+   gotoxy(28,11);
    writeln('Nombre Del cliente: ');
+   gotoxy(28,13);
    readln(nombre_c);
-
+   gotoxy(28,15);
    writeln('Direccion Del Cliente: ');
+   gotoxy(28,17);
+   write('> ');
    read(direccion_c);
-
+   clrscr;
+   gotoxy(28,8);
    writeln('Seleccione Su Metodo De Pago');
+   textcolor(18);
+   gotoxy(28,10);
    writeln('EFECTIVO [1]');
+   gotoxy(28,12);
    writeln('TARJETA DE CREDITO [2]');
+   gotoxy(28,14);
    writeln('TARJETA DE DEBITO [3]');
+   gotoxy(28,15);
+   write('> ');
+
    read(metodo_pago);
 
    case metodo_pago of

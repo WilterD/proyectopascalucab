@@ -9,21 +9,29 @@
         <Filename Value="elcampo.lpr"/>
         <IsPartOfProject Value="True"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="1090"/>
-        <CursorPos X="43" Y="1098"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="160"/>
+        <CursorPos X="60" Y="185"/>
+        <UsageCount Value="21"/>
         <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit1.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="20" Y="7"/>
-        <UsageCount Value="20"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="21"/>
       </Unit1>
     </Units>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="2" HistoryIndex="1">
+      <Position1>
+        <Filename Value="elcampo.lpr"/>
+        <Caret Line="1095" Column="17" TopLine="1069"/>
+      </Position1>
+      <Position2>
+        <Filename Value="elcampo.lpr"/>
+        <Caret Line="1113" Column="40" TopLine="1070"/>
+      </Position2>
+    </JumpHistory>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes Count="0" ActiveMode=""/>
